@@ -6,7 +6,7 @@ import functions as functions
 import threading
 import sys
 
-cap = cv2.VideoCapture(0)
+cap = cv2.VideoCapture(2)
 
 musicThread = threading.Thread(target=functions.playMusic, daemon=True)
 
@@ -133,7 +133,6 @@ with mp_pose.Pose(
     cv2.setMouseCallback('YMCA Detector', click, [clicked])
 
     if (cv2.waitKey(1) == 32):
-        musicThread.stop()
         sys.exit()
 
     x = (image.shape[1] - textsize[0])//2

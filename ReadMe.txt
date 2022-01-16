@@ -38,4 +38,13 @@ https://www.python.org/downloads/release/python-397/ -- it is important you use 
 Enjoy!
 
 
+TROUBLESHOOTING:
+1) If the window after the main menu popped up, but nothing is showing, you'll need to follow these steps:
+    1.1) Head into PyVillage/code/main.py
+    1.2) Go to the line after all the imports, which is "cap = cv2.VideoCapture(0)"
+    1.3) Change the number 0, to 1.
+    1.4) Rerun the program, and if if doesn't work, keep increasing the number.
+    1.5) If eventually it stops even loading and you get an error, you probably need to play with your camera settings.
+
+
 
