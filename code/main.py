@@ -6,6 +6,8 @@ import functions as functions
 import threading
 import sys
 
+cap = cv2.VideoCapture(0)
+
 musicThread = threading.Thread(target=functions.playMusic, daemon=True)
 
 mp_drawing = mp.solutions.drawing_utils
@@ -21,13 +23,9 @@ def click(event, x, y, flags, params):
       clicked = True
     else:
       clicked = False
-try:
-  cap = cv2.VideoCapture(2)
-except:
-  try:
-    cap = cv2.VideoCapture(1)
-  except:
-    cap = cv2.VideoCapture(0)
+
+
+
 curLetter = ""
 prevLetter = ""
 displayLetter = ""
