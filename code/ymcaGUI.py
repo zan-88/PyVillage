@@ -1,9 +1,10 @@
 import cv2
+import time
 
 print("run")
 img = cv2.imread("external-content.duckduckgo.com.jpg")
 
-text = "Welcome to The YMCA Detector /nby The Village People!"
+text = "Welcome to The YMCA Detector /nClick anywhere to begin!"
 
 y_start = 100
 y_inc = 550
@@ -18,13 +19,19 @@ cv2.imshow("Welcome Page", img)
 
 
 def doYMCA(event, x, y, flags, params):
+    global img
     print("hi")
     if event == cv2.EVENT_LBUTTONDOWN:
+        img = cv2.rectangle(img, (0, 0), (1280, 720), (255, 255, 255), -1)
+        textsize = cv2.getTextSize("Loading", cv2.FONT_HERSHEY_SIMPLEX, 4, 2)[0]
+        img = cv2.putText(img, "Loading", (640 - (textsize[0]//2), 360 + (textsize[1]//2)), cv2.FONT_HERSHEY_SIMPLEX, 4, (0, 0, 0), 4, cv2.LINE_AA)
+        cv2.imshow("Welcome Page", img)
+        cv2.waitKey(1500)
         cv2.destroyAllWindows()
         # imgCopy = img.copy()
         # cv2.imshow("Y", imgCopy)
         #insert script name to execute
-        exec(open("main.py").read())
+        exec(open("main.py").read()) 
 
 
 # if left click down

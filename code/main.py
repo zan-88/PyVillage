@@ -6,7 +6,7 @@ import functions as functions
 import threading
 import sys
 
-cap = cv2.VideoCapture(2)
+cap = cv2.VideoCapture(0)
 
 musicThread = threading.Thread(target=functions.playMusic, daemon=True)
 
@@ -109,7 +109,7 @@ with mp_pose.Pose(
       print("No pose detected")
       curLetter = ""
 
-    textsize = cv2.getTextSize(displayLetter, cv2.FONT_HERSHEY_SIMPLEX, 4, 2)[0]
+    textsize = cv2.getTextSize(displayLetter, cv2.FONT_HERSHEY_SIMPLEX, 4, 2)
     
     if clicked:
       mp_drawing.draw_landmarks(
@@ -120,10 +120,12 @@ with mp_pose.Pose(
     
     image = cv2.flip(image, 1)
 
-    if (displayLetter != ""):
-      image = cv2.rectangle(image, (590, 310), (690, 410), (0, 0, 0), -1)
-    
+    # if (displayLetter != ""):
+      # image = cv2.rectangle(image, (x - 100, y + 100), (x + 100, y - 100), (0, 0, 0), -1)
+
+    image = cv2.putText(image, displayLetter, (x, y), cv2.FONT_HERSHEY_SIMPLEX, 4, (0, 0, 0), 8, cv2.LINE_AA)
     image = cv2.putText(image, displayLetter, (x, y), cv2.FONT_HERSHEY_SIMPLEX, 4, (255, 255, 255), 4, cv2.LINE_AA)
+    
     image = cv2.putText(image, "Click anywhere to show skeleton.", (0, 30), cv2.FONT_HERSHEY_SIMPLEX, 1, (255, 255, 255), 1, cv2.LINE_AA)
     image = cv2.putText(image, "Press SpaceBar to exit.", (0, 60), cv2.FONT_HERSHEY_SIMPLEX, 1, (255, 255, 255), 1, cv2.LINE_AA)
     #another test
@@ -135,8 +137,8 @@ with mp_pose.Pose(
     if (cv2.waitKey(1) == 32):
         sys.exit()
 
-    x = (image.shape[1] - textsize[0])//2
-    y = (image.shape[0] + textsize[1])//2
+    x = (image.shape[1] - textsize[0][0])//2
+    y = (image.shape[0] + textsize[0][1])//2
     if (not isxyAssigned):
       position = cv2.getWindowImageRect("YMCA Detector")
     

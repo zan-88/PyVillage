@@ -29,11 +29,13 @@ https://www.python.org/downloads/release/python-397/ -- it is important you use 
         If the first x is below 10, I have actually no idea, and am genuinely sorry you will not be able to use this. If you're determined to use it,
         please email petergelgor7@gmail.com, and I will be happy to help you out.
 
-5) Now, drag either "Run MACOS" or "Run WINDOWS" into the Terminal/Command Prompt window, and press enter.
-    5.1) You may get an error saying that terminal/command prompt doesn't have camera access, you will need to give it camera access to work. 
-        5.1.1) If you're on macOS, you can do this by going to System Preferences > Security & Privacy > Privacy > Camera, and then clicking on the "Allow" button.
-        5.1.1) If you're on Windows, you can do this by going to Control Panel > Security > Privacy > Camera, and then clicking on the "Allow" button.
-    5.2) Finally, once that's done, you should repeat step 5, and it should work properly.
+5) Now it's time to actually run the program
+    5.1) Follow steps 4.1 - 4.3 again, DO NOT DO 4.4, WHEN YOU FINISH 4.3 GO TO 5.2
+    5.2) Now, drag either "Run MACOS" or "Run WINDOWS" into the Terminal/Command Prompt window, and press enter.
+    5.3) You may get an error saying that terminal/command prompt doesn't have camera access, you will need to give it camera access to work. 
+        5.3.1) If you're on macOS, you can do this by going to System Preferences > Security & Privacy > Privacy > Camera, and then clicking on the "Allow" button.
+        5.3.1) If you're on Windows, you can do this by going to Control Panel > Security > Privacy > Camera, and then clicking on the "Allow" button.
+    5.4) Finally, once that's done, you should repeat step 5, and it should work properly.
 
 Enjoy!
 
