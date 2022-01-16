@@ -2,7 +2,7 @@ import cv2
 import mediapipe as mp
 import numpy as np
 import math
-import code.functions as functions
+import functions as functions
 import threading
 import sys
 
