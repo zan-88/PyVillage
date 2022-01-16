@@ -21,8 +21,13 @@ def click(event, x, y, flags, params):
       clicked = True
     else:
       clicked = False
-
-cap = cv2.VideoCapture(2)
+try:
+  cap = cv2.VideoCapture(2)
+except:
+  try:
+    cap = cv2.VideoCapture(1)
+  except:
+    cap = cv2.VideoCapture(0)
 curLetter = ""
 prevLetter = ""
 displayLetter = ""
