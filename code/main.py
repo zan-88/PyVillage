@@ -2,7 +2,7 @@ import cv2
 import mediapipe as mp
 import numpy as np
 import math
-import functions as functions
+import functions
 import threading
 import sys
 
@@ -24,7 +24,7 @@ def click(event, x, y, flags, params):
     else:
       clicked = False
 
-
+letterVisualizer = ""
 
 curLetter = ""
 prevLetter = ""
@@ -39,7 +39,6 @@ with mp_pose.Pose(
     min_detection_confidence=0.5,
     min_tracking_confidence=0.5) as pose:
   while cap.isOpened():
-    print("Current position:", currentYMCAPosition)
     success, image = cap.read()
     if not success:
       print("Ignoring empty camera frame.")
@@ -67,20 +66,22 @@ with mp_pose.Pose(
         right_eye = np.array([results.pose_landmarks.landmark[mp_pose.PoseLandmark.RIGHT_EYE].x, results.pose_landmarks.landmark[mp_pose.PoseLandmark.RIGHT_EYE].y])
         rightAngle = functions.getAngle(right_shoulder, right_elbow, right_wrist)
         leftAngle = functions.getAngle(left_shoulder, left_elbow, left_wrist)
-        # print("rightAngle:", rightAngle, "leftAngle:", leftAngle, "wristDistance:", distance(right_wrist, left_wrist))
 
         if (functions.isY(right_wrist, left_wrist, right_elbow, left_elbow, right_shoulder, left_shoulder, right_eye, left_eye)):
             prevLetter = curLetter
             curLetter = "Y"
             displayLetter = "Y"
             currentYMCAPosition = 1
+            letterVisualizer = "Y"
         elif (functions.isM(left_wrist, right_wrist, right_elbow, left_elbow, right_shoulder, left_shoulder, right_eye, left_eye)):
             if (curLetter != "M"):
                 prevLetter = curLetter
                 if (prevLetter == "Y"):
                     currentYMCAPosition = 2
+                    letterVisualizer = "Y M"
                 else:
                     currentYMCAPosition = 0
+                    letterVisualizer = ""
             curLetter = "M"
             displayLetter = "M"
         elif (functions.isC(right_wrist, left_wrist, right_eye, left_eye)):
@@ -88,8 +89,10 @@ with mp_pose.Pose(
                 prevLetter = curLetter
                 if (prevLetter == "M" and currentYMCAPosition == 2):
                     currentYMCAPosition = 3
+                    letterVisualizer = "Y M C"
                 else:
                     currentYMCAPosition = 0
+                    letterVisualizer = ""
             curLetter = "C"
             displayLetter = "C"
         elif (functions.isA(right_wrist, left_wrist, right_shoulder, left_shoulder, right_elbow, left_elbow)):
@@ -97,16 +100,17 @@ with mp_pose.Pose(
                 prevLetter = curLetter
                 if (prevLetter == "C" and currentYMCAPosition == 3):
                     currentYMCAPosition = 4
+                    letterVisualizer = "Y M C A"
                     musicThread.start()
                 else:
                     currentYMCAPosition = 0
+                    letterVisualizer = ""
             curLetter = "A"
             displayLetter = "A"
         else:
             displayLetter = ""
 
     except:
-      print("No pose detected")
       curLetter = ""
 
     textsize = cv2.getTextSize(displayLetter, cv2.FONT_HERSHEY_SIMPLEX, 4, 2)
@@ -120,16 +124,19 @@ with mp_pose.Pose(
     
     image = cv2.flip(image, 1)
 
-    # if (displayLetter != ""):
-      # image = cv2.rectangle(image, (x - 100, y + 100), (x + 100, y - 100), (0, 0, 0), -1)
 
     image = cv2.putText(image, displayLetter, (x, y), cv2.FONT_HERSHEY_SIMPLEX, 4, (0, 0, 0), 8, cv2.LINE_AA)
     image = cv2.putText(image, displayLetter, (x, y), cv2.FONT_HERSHEY_SIMPLEX, 4, (255, 255, 255), 4, cv2.LINE_AA)
+
     
     image = cv2.putText(image, "Click anywhere to show skeleton.", (0, 30), cv2.FONT_HERSHEY_SIMPLEX, 1, (255, 255, 255), 1, cv2.LINE_AA)
     image = cv2.putText(image, "Press SpaceBar to exit.", (0, 60), cv2.FONT_HERSHEY_SIMPLEX, 1, (255, 255, 255), 1, cv2.LINE_AA)
+    image = cv2.putText(image, letterVisualizer, (800, 100), cv2.FONT_HERSHEY_SIMPLEX, 2, (0, 0, 0), 8, cv2.LINE_AA)
+    image = cv2.putText(image, "Y M C A", (800, 100), cv2.FONT_HERSHEY_SIMPLEX, 2, (255, 255, 255), 4, cv2.LINE_AA)
+
+
     #another test
-    # Flip the image horizontally for a selfie-view display.
+    
     cv2.imshow('YMCA Detector', image)
 
     cv2.setMouseCallback('YMCA Detector', click, [clicked])
@@ -141,9 +148,6 @@ with mp_pose.Pose(
     y = (image.shape[0] + textsize[0][1])//2
     if (not isxyAssigned):
       position = cv2.getWindowImageRect("YMCA Detector")
-    
       isxyAssigned = True
 
-    if cv2.waitKey(5) & 0xFF == 27:
-      break
 cap.release()

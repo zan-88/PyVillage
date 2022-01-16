@@ -20,7 +20,6 @@ cv2.imshow("Welcome Page", img)
 
 def doYMCA(event, x, y, flags, params):
     global img
-    print("hi")
     if event == cv2.EVENT_LBUTTONDOWN:
         img = cv2.rectangle(img, (0, 0), (1280, 720), (255, 255, 255), -1)
         textsize = cv2.getTextSize("Loading", cv2.FONT_HERSHEY_SIMPLEX, 4, 2)[0]
@@ -28,9 +27,7 @@ def doYMCA(event, x, y, flags, params):
         cv2.imshow("Welcome Page", img)
         cv2.waitKey(1500)
         cv2.destroyAllWindows()
-        # imgCopy = img.copy()
-        # cv2.imshow("Y", imgCopy)
-        #insert script name to execute
+        
         exec(open("main.py").read()) 
 
 
