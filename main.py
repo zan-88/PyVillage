@@ -4,8 +4,9 @@ import numpy as np
 import math
 import functions
 import threading
+import sys
 
-musicThread = threading.Thread(target=functions.playMusic)
+musicThread = threading.Thread(target=functions.playMusic, daemon=True)
 
 mp_drawing = mp.solutions.drawing_utils
 mp_drawing_styles = mp.solutions.drawing_styles
@@ -116,12 +117,21 @@ with mp_pose.Pose(
     
     image = cv2.flip(image, 1)
 
-    image = cv2.putText(image, displayLetter, (x, y), cv2.FONT_HERSHEY_SIMPLEX, 4, (0, 0, 255), 2, cv2.LINE_AA)
+    if (displayLetter != ""):
+      image = cv2.rectangle(image, (590, 310), (690, 410), (0, 0, 0), -1)
+    
+    image = cv2.putText(image, displayLetter, (x, y), cv2.FONT_HERSHEY_SIMPLEX, 4, (255, 255, 255), 4, cv2.LINE_AA)
+    image = cv2.putText(image, "Click anywhere to show skeleton.", (0, 30), cv2.FONT_HERSHEY_SIMPLEX, 1, (255, 255, 255), 1, cv2.LINE_AA)
+    image = cv2.putText(image, "Press SpaceBar to exit.", (0, 60), cv2.FONT_HERSHEY_SIMPLEX, 1, (255, 255, 255), 1, cv2.LINE_AA)
     #another test
     # Flip the image horizontally for a selfie-view display.
     cv2.imshow('YMCA Detector', image)
 
     cv2.setMouseCallback('YMCA Detector', click, [clicked])
+
+    if (cv2.waitKey(1) == 32):
+        musicThread.stop()
+        sys.exit()
 
     x = (image.shape[1] - textsize[0])//2
     y = (image.shape[0] + textsize[1])//2
